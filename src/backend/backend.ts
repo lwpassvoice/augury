@@ -441,14 +441,16 @@ export const routerTree = (): Array<any> => {
 };
 
 export const consoleReference = (node: Node) => {
-  Object.defineProperty(window, selectedComponentPropertyKey, {
-    get: () => {
-      if (node) {
-        return ng.probe(node.nativeElement());
+  if (!Object.getOwnPropertyDescriptor(window, selectedComponentPropertyKey)) {
+    Object.defineProperty(window, selectedComponentPropertyKey, {
+      get: () => {
+        if (node) {
+          return ng.probe(node.nativeElement());
+        }
+        return null;
       }
-      return null;
-    }
-  });
+    });
+  }
 };
 
 /// We need to define some operations that are accessible from the global scope so that
